@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "modulo5.ddam.markmota.tk.space"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0"
+    }
+
+    signingConfigs{
+        debug.initWith(signingConfigs.debug)
+        release{
+
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField ("String","URL","\"https://api.nasa.gov\"");
+            buildConfigField("String","NasaApiKey","\"49aYnkFuzquyIAjOpxrpy3KxMnS8wDaGSYXPhaH7\"");
+        }
+        debug {
+            minifyEnabled true
+            buildConfigField ("String","URL","\"https://api.nasa.gov\"");
+            buildConfigField("String","NasaApiKey","\"49aYnkFuzquyIAjOpxrpy3KxMnS8wDaGSYXPhaH7\"");
+        }
+    }
+    productFlavors{
+        free {
+            applicationId "modulo5.ddam.markmota.tk.space.free"
+            versionName "1.0-free"
+        }
+        paied {
+            applicationId "modulo5.ddam.markmota.tk.space.paied"
+            versionName "1.0-paied"
+        }
+
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    //compile 'com.google.code.gson:gson:2.6.2'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+
+
+}

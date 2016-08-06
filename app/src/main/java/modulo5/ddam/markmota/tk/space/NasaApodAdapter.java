@@ -19,6 +19,13 @@ import modulo5.ddam.markmota.tk.space.model.Photo;
  */
 public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
     private List<Photo> marsPhotos;
+    private OnItemClickListener onItemClickListener;
+
+    public NasaApodAdapter(){};
+    public NasaApodAdapter(List<Photo> apods){
+        this.marsPhotos=apods;
+    }
+
 
     public  NasaApodAdapter(MarsPhotos marsPhotos){
         this.marsPhotos=marsPhotos.getPhotos();
@@ -42,13 +49,25 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
         holder.appImg.setImageURI(photo.getImgSrc());
         holder.dateImg.setText(photo.getEarthDate());
         holder.titleImg.setText(photo.getCamera().getName());
+        holder.setItemClick(photo,onItemClickListener);
 
 
+    }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public void setMarsPhotos(MarsPhotos marsPhotos) {
+        this.marsPhotos = marsPhotos.getPhotos();
     }
 
     @Override
     public int getItemCount() {
         return marsPhotos !=null? marsPhotos.size():0;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Photo photo);
     }
 }

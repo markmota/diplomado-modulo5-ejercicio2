@@ -1,5 +1,6 @@
 package modulo5.ddam.markmota.tk.space;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -13,6 +14,8 @@ import retrofit2.Call;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
 
 import java.util.List;
@@ -38,13 +41,33 @@ public class MainActivity extends AppCompatActivity {
 
         marsRoverListingRecycler.setLayoutManager(gridLayoutManager);
 
+        final NasaApodAdapter nasaApodAdapter=new NasaApodAdapter();
+        nasaApodAdapter.setOnItemClickListener(new NasaApodAdapter.OnItemClickListener(){
+            @Override
+            public void onItemClick(Photo photo){
+                //Log.d("TagMarduk",photo.getImgSrc());
+                //Toast.makeText(getApplicationContext(),photo.getImgSrc(),Toast.LENGTH_SHORT).show();
+                // Start to configure the start of the next  activity
+                Intent intent= new Intent(getApplicationContext(),DetailActivity.class);
+                // Variables to send to the next activity
+                intent.putExtra("title",photo.getCamera().getName());
+                intent.putExtra("image",photo.getImgSrc());
+                intent.putExtra("date",photo.getEarthDate());
+
+                startActivity(intent);
+
+
+            }
+
+        });
         MarsPhotoService marsService= Data.getRetrofitInstance().create(MarsPhotoService.class);
         Call<MarsPhotos> callMarsService =marsService.getMarsImages(BuildConfig.NasaApiKey,"1000");
 
         callMarsService.enqueue(new Callback<MarsPhotos>(){
             @Override
             public  void onResponse(Call<MarsPhotos> call, Response<MarsPhotos> response){
-                marsRoverListingRecycler.setAdapter(new NasaApodAdapter(response.body()));
+                nasaApodAdapter.setMarsPhotos(response.body());
+                marsRoverListingRecycler.setAdapter(nasaApodAdapter);
 
             }
             @Override

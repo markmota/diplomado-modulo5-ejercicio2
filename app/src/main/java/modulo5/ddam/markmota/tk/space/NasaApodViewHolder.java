@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -13,7 +15,7 @@ import butterknife.ButterKnife;
  */
 public class NasaApodViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.nasa_apod_items_image)
-    ImageView appImg;
+    SimpleDraweeView appImg;
     @BindView(R.id.nasa_apod_items_title)
     TextView titleImg;
 

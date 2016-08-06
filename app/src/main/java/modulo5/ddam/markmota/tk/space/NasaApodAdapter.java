@@ -32,13 +32,14 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
     public void onBindViewHolder(NasaApodViewHolder holder, int position) {
         Photo photo = marsPhotos.get(position);
 
-            Picasso.with(holder.appImg.getContext())
+          /*  Picasso.with(holder.appImg.getContext())
                     .load(photo.getImgSrc())
                     .resize(500, 300)
                     .centerCrop()
                     .placeholder(android.R.drawable.ic_input_get)
                     .error(android.R.drawable.ic_dialog_alert)
-                    .into(holder.appImg);
+                    .into(holder.appImg);*/
+        holder.appImg.setImageURI(photo.getImgSrc());
         holder.dateImg.setText(photo.getEarthDate());
         holder.titleImg.setText(photo.getCamera().getName());
 

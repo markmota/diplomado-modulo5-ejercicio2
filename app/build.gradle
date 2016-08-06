@@ -24,11 +24,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField ("String","URL","\"https://api.nasa.gov\"");
             buildConfigField("String","NasaApiKey","\"49aYnkFuzquyIAjOpxrpy3KxMnS8wDaGSYXPhaH7\"");
+            buildConfigField("String","Sol","\"1000\"");
+            buildConfigField("String","Camera","\"RHAZ\"");
+            buildConfigField("String","Page","\"1\"");
         }
         debug {
             minifyEnabled true
             buildConfigField ("String","URL","\"https://api.nasa.gov\"");
             buildConfigField("String","NasaApiKey","\"49aYnkFuzquyIAjOpxrpy3KxMnS8wDaGSYXPhaH7\"");
+            buildConfigField("String","Sol","\"1000\"");
+            buildConfigField("String","Camera","\"RHAZ\"");
+            buildConfigField("String","Page","\"1\"");
+
         }
     }
     productFlavors{

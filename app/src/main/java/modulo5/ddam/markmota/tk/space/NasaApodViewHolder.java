@@ -16,12 +16,10 @@ public class NasaApodViewHolder extends RecyclerView.ViewHolder {
     ImageView appImg;
     @BindView(R.id.nasa_apod_items_title)
     TextView titleImg;
-    @BindView(R.id.nasa_apod_items_desc)
-    TextView descImg;
+
     @BindView(R.id.nasa_apod_items_date)
     TextView dateImg;
-    @BindView(R.id.nasa_apod_items_copy)
-    TextView copyImg;
+
 
     public NasaApodViewHolder(View itemView) {
         super(itemView);

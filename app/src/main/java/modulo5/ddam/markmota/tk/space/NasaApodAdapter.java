@@ -1,6 +1,7 @@
 package modulo5.ddam.markmota.tk.space;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,14 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import modulo5.ddam.markmota.tk.space.model.Apod;
+import modulo5.ddam.markmota.tk.space.model.MarsPhotos;
+import modulo5.ddam.markmota.tk.space.model.Photo;
 
 /**
  * Created by markmota on 8/5/16.
  */
 public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
-    private List<Apod> apods;
+    private List<Photo> marsPhotos;
 
-    public  NasaApodAdapter(ArrayList<Apod> apods){this.apods=apods;}
+    public  NasaApodAdapter(MarsPhotos marsPhotos){
+        this.marsPhotos=marsPhotos.getPhotos();
+    }
     @Override
     public NasaApodViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new NasaApodViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.nasa_apod_items,parent,false));
@@ -25,25 +30,24 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
 
     @Override
     public void onBindViewHolder(NasaApodViewHolder holder, int position) {
-        Apod apod=apods.get(position);
-        if(apod.getMediaType().equals("image")){
+        Photo photo = marsPhotos.get(position);
+
             Picasso.with(holder.appImg.getContext())
-                    .load(apod.getUrl())
+                    .load(photo.getImgSrc())
                     .resize(500, 300)
                     .centerCrop()
                     .placeholder(android.R.drawable.ic_input_get)
                     .error(android.R.drawable.ic_dialog_alert)
                     .into(holder.appImg);
-        }
-        holder.copyImg.setText(apod.getCopyright());
-        holder.dateImg.setText(apod.getDate());
-        holder.descImg.setText(apod.getExplanation());
-        holder.titleImg.setText(apod.getTitle());
+        holder.dateImg.setText(photo.getEarthDate());
+        holder.titleImg.setText(photo.getCamera().getName());
+
+
 
     }
 
     @Override
     public int getItemCount() {
-        return apods !=null? apods.size():0;
+        return marsPhotos !=null? marsPhotos.size():0;
     }
 }

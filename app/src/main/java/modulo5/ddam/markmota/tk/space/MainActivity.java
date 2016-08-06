@@ -5,71 +5,50 @@ import android.os.Bundle;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import modulo5.ddam.markmota.tk.space.data.MarsPhotoService;
+import modulo5.ddam.markmota.tk.space.model.MarsPhotos;
+import modulo5.ddam.markmota.tk.space.model.Photo;
 import retrofit2.Call;
 
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
 
-import modulo5.ddam.markmota.tk.space.data.ApodService;
+import java.util.List;
+
 import modulo5.ddam.markmota.tk.space.data.Data;
-import modulo5.ddam.markmota.tk.space.model.Apod;
+
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    // Here we replace the code setting the variables binding to the views using butter knife
-    @BindView(R.id.activity_main_image)
-    ImageView appImg;
-    @BindView(R.id.activity_main_title)
-    TextView titleImg;
-    @BindView(R.id.activity_main_desc)
-    TextView descImg;
-    @BindView(R.id.activity_main_date)
-    TextView dateImg;
-    @BindView(R.id.activity_main_copy)
-    TextView copyImg;
+    @BindView(R.id.mars_rover_listing)
+    RecyclerView marsRoverListingRecycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_listing);
         ButterKnife.bind(this);
-        ApodService apodService= Data.getRetrofitInstance().create(ApodService.class);
-        Call<Apod> callApodService =apodService.getTodayPod(BuildConfig.NasaApiKey,"2016-06-27");
 
-        callApodService.enqueue(new Callback<Apod>(){
+        //LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
+        GridLayoutManager gridLayoutManager= new GridLayoutManager(this,2);
+
+
+        marsRoverListingRecycler.setLayoutManager(gridLayoutManager);
+
+        MarsPhotoService marsService= Data.getRetrofitInstance().create(MarsPhotoService.class);
+        Call<MarsPhotos> callMarsService =marsService.getMarsImages(BuildConfig.NasaApiKey,"1000");
+
+        callMarsService.enqueue(new Callback<MarsPhotos>(){
             @Override
-            public  void onResponse(Call<Apod> call, Response<Apod> response){
-                Log.d("APODTitle",response.body().getTitle());
-                Log.d("APODUrl",response.body().getUrl());
-                String imageToUse=response.body().getUrl();
-                String titleImage=response.body().getTitle();
-                String descImage=response.body().getExplanation();
-                String dateImage=response.body().getDate();
-                String copyImage=response.body().getCopyright();
-                titleImg.setText(titleImage);
-                descImg.setText(descImage);
-                dateImg.setText(dateImage);
-                if(TextUtils.isEmpty(copyImage))
-                    copyImg.setText("by Anonymous");
-                else
-                    copyImg.setText("by "+copyImage);
-                Picasso.with(getApplicationContext())
-                        .load(imageToUse)
-                        .resize(500, 300)
-                        .centerCrop()
-                        .placeholder(android.R.drawable.ic_input_get)
-                        .error(android.R.drawable.ic_dialog_alert)
-                        .into(appImg);
-
+            public  void onResponse(Call<MarsPhotos> call, Response<MarsPhotos> response){
+                marsRoverListingRecycler.setAdapter(new NasaApodAdapter(response.body()));
 
             }
             @Override
-            public void onFailure(Call<Apod> call,Throwable t){
+            public void onFailure(Call<MarsPhotos> call,Throwable t){
 
             }
         });

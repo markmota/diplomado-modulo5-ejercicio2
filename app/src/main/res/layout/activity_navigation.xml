@@ -5,13 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:id="@+id/listing_navigation_drawer"
     >
     <include layout="@layout/activity_listing"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-       />
+        android:layout_height="wrap_content" />
+
 
     <android.support.design.widget.NavigationView
+        android:id="@+id/listing_navigation_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         navigation:headerLayout="@layout/activity_menu_head_nav"

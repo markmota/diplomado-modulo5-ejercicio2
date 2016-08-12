@@ -14,7 +14,9 @@ import retrofit2.Call;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 
@@ -26,19 +28,24 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    @BindView(R.id.mars_rover_listing)
-    RecyclerView marsRoverListingRecycler;
+    //@BindView(R.id.mars_rover_listing)
+    //RecyclerView marsRoverListingRecycler;
+   @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_listing);
+        setContentView(R.layout.activity_navigation);
         ButterKnife.bind(this);
 
+        //Settings toolbar
+        // Setting support to Action Bar
+        toolbar.setTitle("Nasa Photos");
+
+        /*
         //LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager= new GridLayoutManager(this,2);
-
-
         marsRoverListingRecycler.setLayoutManager(gridLayoutManager);
 
         final NasaApodAdapter nasaApodAdapter=new NasaApodAdapter();
@@ -75,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        */
 
 
 

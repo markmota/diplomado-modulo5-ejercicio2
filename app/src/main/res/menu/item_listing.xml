@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/item_listing_mars"
+            android:checkable="false"
+            android:title="Mars Rover Images"/>
+        <item
+            android:id="@+id/item_listing_today"
+            android:checkable="false"
+            android:title="Today APOD"
+            android:icon="@drawable/ic_action_arrow_left"/>
+        <item
+            android:id="@+id/item_listing_favorite"
+            android:checkable="false"
+            android:title="Favorites"/>
+    </group>
+
+</menu>

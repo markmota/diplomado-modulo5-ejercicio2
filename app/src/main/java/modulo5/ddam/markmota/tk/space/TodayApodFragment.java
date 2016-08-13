@@ -1,11 +1,15 @@
 package modulo5.ddam.markmota.tk.space;
 
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -36,6 +40,14 @@ public class TodayApodFragment extends Fragment {
     TextView dateImg;
     @BindView(R.id.activity_main_copy)
     TextView copyImg;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,7 +62,7 @@ public class TodayApodFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ApodService apodService= Data.getRetrofitInstance().create(ApodService.class);
-        Call<Apod> callApodService =apodService.getTodayPod(BuildConfig.NasaApiKey,"2016-06-27");
+        Call<Apod> callApodService =apodService.getTodayPod(BuildConfig.NasaApiKey);
 
         callApodService.enqueue(new Callback<Apod>(){
             @Override
@@ -79,6 +91,23 @@ public class TodayApodFragment extends Fragment {
             }
         });
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.settings_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
 
+            case R.id.settings_menu_item:
+                Snackbar.make(getView(),"Settings updated",Snackbar.LENGTH_INDEFINITE).show();
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

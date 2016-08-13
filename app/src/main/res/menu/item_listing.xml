@@ -8,8 +8,7 @@
         <item
             android:id="@+id/item_listing_today"
             android:checkable="false"
-            android:title="Today APOD"
-            android:icon="@drawable/ic_action_arrow_left"/>
+            android:title="Today APOD" />
         <item
             android:id="@+id/item_listing_favorite"
             android:checkable="false"

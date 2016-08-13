@@ -1,7 +1,9 @@
 package modulo5.ddam.markmota.tk.space;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -32,8 +34,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    //@BindView(R.id.mars_rover_listing)
-    //RecyclerView marsRoverListingRecycler;
    @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.listing_navigation_view)
@@ -48,15 +48,32 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navigation);
         ButterKnife.bind(this);
 
-        //Settings toolbar
         // Setting support to Action Bar
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Nasa Photos");
+
         // Implements the actions of the buttons in the list
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
 
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+
+                drawerLayout.closeDrawers();
+
+
+                switch (item.getItemId()){
+                    case R.id.item_listing_favorite:
+                        Snackbar.make(findViewById(android.R.id.content),"Favorite Photo",Snackbar.LENGTH_INDEFINITE).show();
+                        return  true;
+                    case R.id.item_listing_mars:
+                        // charge the default  fragment mars rover
+                        chargeRoverFragment();
+                        return  true;
+                    case R.id.item_listing_today:
+                        chargeTodayFragment();
+                        return  true;
+
+
+                }
                 return false;
             }
         });
@@ -78,49 +95,23 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        /*
-        //LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
-        GridLayoutManager gridLayoutManager= new GridLayoutManager(this,2);
-        marsRoverListingRecycler.setLayoutManager(gridLayoutManager);
-
-        final NasaApodAdapter nasaApodAdapter=new NasaApodAdapter();
-        nasaApodAdapter.setOnItemClickListener(new NasaApodAdapter.OnItemClickListener(){
-            @Override
-            public void onItemClick(Photo photo){
-                //Log.d("TagMarduk",photo.getImgSrc());
-                //Toast.makeText(getApplicationContext(),photo.getImgSrc(),Toast.LENGTH_SHORT).show();
-                // Start to configure the start of the next  activity
-                Intent intent= new Intent(getApplicationContext(),DetailActivity.class);
-                // Variables to send to the next activity
-                intent.putExtra("title",photo.getCamera().getName());
-                intent.putExtra("image",photo.getImgSrc());
-                intent.putExtra("date",photo.getEarthDate());
-
-                startActivity(intent);
-
-
-            }
-
-        });
-        MarsPhotoService marsService= Data.getRetrofitInstance().create(MarsPhotoService.class);
-        Call<MarsPhotos> callMarsService =marsService.getMarsImages(BuildConfig.NasaApiKey,"1000");
-
-        callMarsService.enqueue(new Callback<MarsPhotos>(){
-            @Override
-            public  void onResponse(Call<MarsPhotos> call, Response<MarsPhotos> response){
-                nasaApodAdapter.setMarsPhotos(response.body());
-                marsRoverListingRecycler.setAdapter(nasaApodAdapter);
-
-            }
-            @Override
-            public void onFailure(Call<MarsPhotos> call,Throwable t){
-
-            }
-        });
-        */
+        // charge the default  fragment mars rover
+        chargeRoverFragment();
 
 
 
+    }
+    // Implements rover fragment functionality
+    private void chargeRoverFragment() {
+        //Toolbar title
+        toolbar.setTitle("Mars Rover Photos List");
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragmentHolder,new MarsRoverFragment()).commit();
+    }
+    // Implements today photo fragment functionality
+    private void chargeTodayFragment() {
+        //Toolbar title
+        toolbar.setTitle("Today Photo");
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragmentHolder,new TodayApodFragment()).commit();
     }
 
 }

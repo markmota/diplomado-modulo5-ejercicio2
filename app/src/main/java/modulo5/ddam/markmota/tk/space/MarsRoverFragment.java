@@ -91,21 +91,21 @@ public class MarsRoverFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.share_menu,menu);
+        inflater.inflate(R.menu.settings_menu,menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId())
         {
 
-            case R.id.share_today_apod:
-                Snackbar.make(getView(),"Share options clicked",Snackbar.LENGTH_INDEFINITE).show();
+            case R.id.settings_menu_item:
+                Snackbar.make(getView(),"Settings updated",Snackbar.LENGTH_INDEFINITE).show();
                 return true;
 
-
         }
+
         return super.onOptionsItemSelected(item);
     }
 }

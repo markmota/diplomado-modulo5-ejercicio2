@@ -1,5 +1,6 @@
 package modulo5.ddam.markmota.tk.space;
 
+import android.content.Intent;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -40,6 +41,7 @@ public class TodayApodFragment extends Fragment {
     TextView dateImg;
     @BindView(R.id.activity_main_copy)
     TextView copyImg;
+    String imageToUse;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class TodayApodFragment extends Fragment {
             public  void onResponse(Call<Apod> call, Response<Apod> response){
                 Log.d("APODTitle",response.body().getTitle());
                 Log.d("APODUrl",response.body().getUrl());
-                String imageToUse=response.body().getUrl();
+                imageToUse=response.body().getUrl();
                 String titleImage=response.body().getTitle();
                 String descImage=response.body().getExplanation();
                 String dateImage=response.body().getDate();
@@ -91,23 +93,36 @@ public class TodayApodFragment extends Fragment {
             }
         });
     }
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.settings_menu,menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.share_menu,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId())
         {
 
-            case R.id.settings_menu_item:
-                Snackbar.make(getView(),"Settings updated",Snackbar.LENGTH_INDEFINITE).show();
+            case R.id.share_today_apod:
+                Snackbar.make(getView(),"Share options clicked",Snackbar.LENGTH_INDEFINITE).show();
+                shareText("Diplomado UNAM "+imageToUse);
                 return true;
 
-        }
 
+        }
         return super.onOptionsItemSelected(item);
     }
+    private void shareText(String text){
+        Intent shareIntent=new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,text);
+        startActivity(Intent.createChooser(shareIntent,"Compartir con amigos"));
+    }
+
+
+
+
+
 }

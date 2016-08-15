@@ -12,13 +12,16 @@
         android:layout_height="120dp"
         android:id="@+id/activity_menu_head_nav_image"
         fresco:actualImageScaleType="fitXY"
-        android:layout_margin="15dp"/>
+        android:layout_margin="15dp"
+        android:layout_gravity="center"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Titulo de prueba"
         android:id="@+id/activity_menu_head_nav_title"
-        android:textSize="10dp"
-        android:layout_margin="15dp"/>
+        android:textSize="20dp"
+        android:layout_margin="15dp"
+        android:textColor="@color/colorWhite"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

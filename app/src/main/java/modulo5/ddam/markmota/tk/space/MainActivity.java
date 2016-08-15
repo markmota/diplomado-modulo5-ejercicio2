@@ -12,6 +12,7 @@ import android.os.Bundle;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import modulo5.ddam.markmota.tk.space.data.MarsPhotoService;
+import modulo5.ddam.markmota.tk.space.login.FBLoginActivity;
 import modulo5.ddam.markmota.tk.space.model.MarsPhotos;
 import modulo5.ddam.markmota.tk.space.model.Photo;
 import retrofit2.Call;
@@ -23,8 +24,17 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -34,12 +44,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-   @BindView(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.listing_navigation_view)
     NavigationView navigationView;
     @BindView(R.id.listing_navigation_drawer)
     DrawerLayout drawerLayout;
+
+    private  TextView username;
+
+    private  SimpleDraweeView userPhoto;
 
 
     @Override
@@ -47,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navigation);
         ButterKnife.bind(this);
+
+
 
         // Setting support to Action Bar
         setSupportActionBar(toolbar);
@@ -62,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.item_listing_favorite:
-                        Snackbar.make(findViewById(android.R.id.content),"Favorite Photo",Snackbar.LENGTH_INDEFINITE).show();
+                        Snackbar.make(findViewById(android.R.id.content),"Favorite Photo",Snackbar.LENGTH_SHORT).show();
                         return  true;
                     case R.id.item_listing_mars:
                         // charge the default  fragment mars rover
@@ -70,6 +86,9 @@ public class MainActivity extends AppCompatActivity {
                         return  true;
                     case R.id.item_listing_today:
                         chargeTodayFragment();
+                        return  true;
+                    case R.id.item_logout:
+                        finish();
                         return  true;
 
 
@@ -91,15 +110,44 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
+
+
         // To orientate the icon of the menu correctly
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+
+        getUserInfo();
 
         // charge the default  fragment mars rover
         chargeRoverFragment();
 
 
 
+
+
+
+
+
+
+    }
+    private void getUserInfo(){
+        // getting information of username and photo
+        GraphRequest request=  GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),new GraphRequest.GraphJSONObjectCallback(){
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                try{
+                    username=(TextView) findViewById(R.id.activity_menu_head_nav_title);
+                    userPhoto= (SimpleDraweeView) findViewById(R.id.activity_menu_head_nav_image);
+                    //Snackbar.make(findViewById(android.R.id.content),object.getString("name"),Snackbar.LENGTH_SHORT).show();
+                   username.setText(object.getString("name"));
+                   userPhoto.setImageURI("http://graph.facebook.com/" + object.getString("id") + "/picture?type=large");
+
+                } catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+        request.executeAsync();
     }
     // Implements rover fragment functionality
     private void chargeRoverFragment() {

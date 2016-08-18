@@ -32,7 +32,7 @@ public class FBLoginActivity extends AppCompatActivity implements FacebookCallba
 
         nasaImage.setImageURI("https://static.festisite.com/static/partylogo/img/logos/nasa.png");
 
-        // Hepls to listening the facebook login result
+        // Helps to listening the facebook login result
         callbackManager=CallbackManager.Factory.create();
         loginButton.registerCallback(callbackManager,this);
 

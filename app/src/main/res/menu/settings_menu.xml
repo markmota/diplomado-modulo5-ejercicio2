@@ -7,4 +7,10 @@
         android:title="Settings menu"
         app:showAsAction="always"
         android:icon="@android:drawable/ic_input_add"/>
+    <item
+        android:id="@+id/share_today_apod"
+        android:checkable="false"
+        android:title="share"
+        app:showAsAction="always"
+        android:icon="@android:drawable/ic_menu_share" />
 </menu>

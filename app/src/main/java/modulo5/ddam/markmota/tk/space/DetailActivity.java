@@ -67,9 +67,7 @@ public class DetailActivity extends AppCompatActivity {
         imageToUse=getIntent().getExtras().getString("image");
         appImg.setImageURI(imageToUse);
 
-        // Binding the elements of the menu
-        //favoritesButton=(MenuItem) findViewById(R.id.settings_menu_item);
-        //eraseButton=(MenuItem) findViewById(R.id.settings_menu_erase);
+
 
 
 
@@ -78,20 +76,22 @@ public class DetailActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.settings_menu, menu);
+        // Binding the elements of the menu
+        favoritesButton=menu.findItem(R.id.settings_menu_item);
+        eraseButton=menu.findItem(R.id.settings_menu_erase);
 
-        /*
         // Checking if the image is in favorites to show the correct menu botton
         ImgDataSource imgDataSource= new ImgDataSource(getApplicationContext());
         ModelImg itemInfo=imgDataSource.getInfoItem(imageToUse);
+
         if(itemInfo!=null){
             favoritesButton.setVisible(false);
             eraseButton.setVisible(true);
         }
-        else{
+        else {
             favoritesButton.setVisible(true);
             eraseButton.setVisible(false);
         }
-        */
         return true;
     }
 
@@ -127,13 +127,13 @@ public class DetailActivity extends AppCompatActivity {
         saved=imgDataSource.saveItem(modelImg);
         // Check if was saved
         if(saved){
-            //favoritesButton.setVisible(false);
-            //eraseButton.setVisible(true);
+            favoritesButton.setVisible(false);
+            eraseButton.setVisible(true);
             Snackbar.make(findViewById(android.R.id.content),"Imagen guardada en tus favoritos",Snackbar.LENGTH_SHORT).show();
         }
         else{
-            //favoritesButton.setVisible(true);
-            //eraseButton.setVisible(false);
+            favoritesButton.setVisible(true);
+            eraseButton.setVisible(false);
             Snackbar.make(findViewById(android.R.id.content),"Lo siento, no pude guardar la imagen en tus favoritos, ¿lo intentas nuevamente?",Snackbar.LENGTH_INDEFINITE).show();
         }
 
@@ -142,8 +142,8 @@ public class DetailActivity extends AppCompatActivity {
     private void remove_item() {
         ImgDataSource imgDataSource= new ImgDataSource(getApplicationContext());
         imgDataSource.deleteItem(imageToUse);
-        //favoritesButton.setVisible(true);
-        //eraseButton.setVisible(false);
+        favoritesButton.setVisible(true);
+        eraseButton.setVisible(false);
         Snackbar.make(findViewById(android.R.id.content),"Listo! Ya no esta en tus favoritos esta imagen",Snackbar.LENGTH_SHORT).show();
 
 

@@ -78,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()){
                     case R.id.item_listing_favorite:
-                        Snackbar.make(findViewById(android.R.id.content),"Favorite Photo",Snackbar.LENGTH_SHORT).show();
+                        //Snackbar.make(findViewById(android.R.id.content),"Favorite Photo",Snackbar.LENGTH_SHORT).show();
+                        chargeFavoritesFragment();
                         return  true;
                     case R.id.item_listing_mars:
                         // charge the default  fragment mars rover
@@ -152,14 +153,29 @@ public class MainActivity extends AppCompatActivity {
     // Implements rover fragment functionality
     private void chargeRoverFragment() {
         //Toolbar title
+        android.support.v4.app.Fragment marsRover=new MarsRoverFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("IsFavorites", false);
+        marsRover.setArguments(args);
         toolbar.setTitle("Mars Rover Photos List");
-        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragmentHolder,new MarsRoverFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragmentHolder,marsRover).commit();
+    }
+    // Implements favorites fragment functionality
+    private void chargeFavoritesFragment() {
+        //Toolbar title
+        android.support.v4.app.Fragment marsRover=new MarsRoverFragment();
+        Bundle args = new Bundle();
+        args.putBoolean("IsFavorites", true);
+        marsRover.setArguments(args);
+        toolbar.setTitle("Favorites Photos List");
+        getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragmentHolder,marsRover).commit();
     }
     // Implements today photo fragment functionality
     private void chargeTodayFragment() {
         //Toolbar title
         toolbar.setTitle("Today Photo");
         getSupportFragmentManager().beginTransaction().replace(R.id.activity_main_fragmentHolder,new TodayApodFragment()).commit();
+
     }
 
 }

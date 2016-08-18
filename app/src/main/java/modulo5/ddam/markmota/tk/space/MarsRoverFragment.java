@@ -30,7 +30,7 @@ import retrofit2.Response;
 public class MarsRoverFragment extends Fragment {
     @BindView(R.id.mars_rover_listing)
     RecyclerView marsRoverListingRecycler;
-
+    private Boolean isFavorites=false; // To check if is the list of favorites or not
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +40,10 @@ public class MarsRoverFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // Geting information
+        Bundle args = getArguments();
+        isFavorites= args.getBoolean("IsFavorites");
         // Inflate the layout for this fragment
         View mainView= inflater.inflate(R.layout.activity_listing, container, false);
         ButterKnife.bind(this,mainView);
@@ -78,7 +82,7 @@ public class MarsRoverFragment extends Fragment {
         callMarsService.enqueue(new Callback<MarsPhotos>(){
             @Override
             public  void onResponse(Call<MarsPhotos> call, Response<MarsPhotos> response){
-                nasaApodAdapter.setMarsPhotos(response.body());
+                nasaApodAdapter.setMarsPhotos(response.body(),getContext(),isFavorites);
                 marsRoverListingRecycler.setAdapter(nasaApodAdapter);
 
             }

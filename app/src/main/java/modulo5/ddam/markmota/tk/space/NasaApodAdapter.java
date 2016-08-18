@@ -1,10 +1,12 @@
 package modulo5.ddam.markmota.tk.space;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.facebook.internal.BoltsMeasurementEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -12,13 +14,15 @@ import java.util.List;
 
 import modulo5.ddam.markmota.tk.space.model.Apod;
 import modulo5.ddam.markmota.tk.space.model.MarsPhotos;
+import modulo5.ddam.markmota.tk.space.model.ModelImg;
 import modulo5.ddam.markmota.tk.space.model.Photo;
+import modulo5.ddam.markmota.tk.space.sql.ImgDataSource;
 
 /**
  * Created by markmota on 8/5/16.
  */
 public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
-    private List<Photo> marsPhotos;
+    private List<Photo> marsPhotos=new ArrayList<Photo>();
     private OnItemClickListener onItemClickListener;
 
     public NasaApodAdapter(){};
@@ -38,14 +42,6 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
     @Override
     public void onBindViewHolder(NasaApodViewHolder holder, int position) {
         Photo photo = marsPhotos.get(position);
-
-          /*  Picasso.with(holder.appImg.getContext())
-                    .load(photo.getImgSrc())
-                    .resize(500, 300)
-                    .centerCrop()
-                    .placeholder(android.R.drawable.ic_input_get)
-                    .error(android.R.drawable.ic_dialog_alert)
-                    .into(holder.appImg);*/
         holder.appImg.setImageURI(photo.getImgSrc());
         holder.dateImg.setText(photo.getEarthDate());
         holder.titleImg.setText(photo.getCamera().getName());
@@ -58,8 +54,34 @@ public class NasaApodAdapter extends RecyclerView.Adapter<NasaApodViewHolder> {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setMarsPhotos(MarsPhotos marsPhotos) {
-        this.marsPhotos = marsPhotos.getPhotos();
+    public void setMarsPhotos(MarsPhotos marsPhotos, Context context, Boolean justFavorites) {
+
+        List<Photo> marsPhotosHolder;
+        marsPhotosHolder = marsPhotos.getPhotos();
+        ImgDataSource imgDataSource= new ImgDataSource(context);
+        // Decide if we have to show all the photos or just the favorites
+        if(justFavorites) {
+            for (int i = 0; i < marsPhotosHolder.size(); i++) {
+
+                ModelImg itemInfo = imgDataSource.getInfoItem(marsPhotosHolder.get(i).getImgSrc());
+
+                if (itemInfo != null) {
+                    Log.d("Adding to the list: ", marsPhotosHolder.get(i).getImgSrc());
+                    this.marsPhotos.add(marsPhotosHolder.get(i));
+                }
+            }
+        }
+        else{
+            this.marsPhotos=marsPhotosHolder;
+        }
+        for (int i = 0; i < this.marsPhotos.size(); i++) {
+
+            Log.d("Photos on list: ", this.marsPhotos.get(i).getImgSrc());
+
+        }
+
+
+
     }
 
     @Override

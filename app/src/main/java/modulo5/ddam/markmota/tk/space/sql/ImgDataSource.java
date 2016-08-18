@@ -92,7 +92,7 @@ public class ImgDataSource {
                 MySqliteHelper.APP_COLUMN_CREATION
         };
         String[] args = new String[] {String.valueOf(image)};
-        String where= MySqliteHelper.APP_COLUMN_CREATION+"=? ";
+        String where= MySqliteHelper.APP_COLUMN_IMG+"=? ";
         Cursor cursor =db.query(MySqliteHelper.APP_TABLE_NAME,fields_to_recover,where,args,null,null,null);
         if (cursor.moveToNext())
         {
